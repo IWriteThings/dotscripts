@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# A POSIX variable
+OPTIND=1	# Reset in case getopts has been used previously in the shell.
+
+while getopts "h?mfo:" opt; do
+    case "$opt" in
+    h|\?)
+		echo "Choose -m to mirror display"
+        exit 0
+        ;;
+    m)
+		# Mirror the Display
+		xrandr --output HDMI1 --off
+		xrandr --output HDMI1 --auto --scale-from 1366x768
+		echo "The display is now mirrored."
+		exit 0
+        ;;
+    f)
+		echo "Not yet implemented."
+		exit 0
+        ;;
+	o)
+		echo "The external monitor has been disabled."
+		xrandr --output HDMI1 --off
+		exit 0
+        ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+[ "$1" = "--" ] && shift
+
+echo "You did not choose an appropriate option. -h for help"
+exit 0
